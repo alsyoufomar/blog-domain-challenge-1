@@ -49,12 +49,19 @@ model Post {
 }
 
 model Comment {
-  id        Int      @id @default(autoincrement())
-  content   String   @db.VarChar(250)
-  userId    Int      @unique
-  user      User     @relation(fields: [userId], references: [id])
-  postId    Int      @unique
-  post      Post     @relation(fields: [postId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id      Int    @id @default(autoincrement())
+  content String @db.VarChar(250)
+
+  userId Int  @unique
+  user   User @relation(fields: [userId], references: [id])
+
+  postId Int?  @unique
+  post   Post? @relation(fields: [postId], references: [id])
+
+  replyId Int?
+  reply   Comment? @relation("CommentToComment", fields: [replyId], references: [id])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  comments  Comment[] @relation("CommentToComment")
 }

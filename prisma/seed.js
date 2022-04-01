@@ -12,6 +12,14 @@ async function seed () {
     }
   });
 
+  const createdUsers2 = await prisma.user.create({
+    data: {
+      username: 'Yorikaa!',
+      email: "123@123.yourii",
+      password: "oioioioioi"
+    }
+  });
+
   console.log(`${createdUsers.count} users created`, createdUsers);
 
 
@@ -59,7 +67,21 @@ async function seed () {
     }
   })
 
-
+  const createdReply = await prisma.comment.create({
+    data: {
+      content: "the kebab is too good!",
+      user: {
+        connect: {
+          id: createdUsers2.id
+        }
+      },
+      comments: {
+        connect: {
+          id: createComment.id
+        }
+      }
+    }
+  })
 
   // Don't edit any of the code below this line
   process.exit(0);
